@@ -1,7 +1,7 @@
 # Postcat
 
-import os
 import argparse
+import subprocess
 
 SPOOL_DIR = '/var/spool/postfix'
 POSTCAT_EXEC = '/usr/local/bin/postcat'
@@ -23,11 +23,11 @@ def main(argv):
     # build the file's full path
     queue_id = argv.queue_id
     first = queue_id[0]
-    f = SPOOL_DIR + '/' + queue + '/' + first + '/' + queue_id
+    f = '/'.join([SPOOL_DIR, queue, first, queue_id])
     # build the cmd
     cmd = "{} {}".format(POSTCAT_EXEC, f)
 
-    print os.popen(cmd).read()
+    print subprocess.Popen(cmd, shell=True, stdout=subprocess.PIPE).stdout.read()
 
 
 if __name__ == '__main__':
